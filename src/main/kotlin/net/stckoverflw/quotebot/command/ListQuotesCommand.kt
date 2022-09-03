@@ -18,7 +18,7 @@ import net.stckoverflw.quotebot.util.memberPermissionCheck
 import org.litote.kmongo.eq
 
 suspend fun QuoteBotCommandModule.listQuoteCommand() = publicSlashCommand(::ListQuotesArguments) {
-    name = "list"
+    name = "list-quotes"
     description = "List all quotes of a specific Member"
     allowInDms = false
 
