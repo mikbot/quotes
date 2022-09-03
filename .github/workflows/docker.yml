@@ -1,0 +1,32 @@
+name: Docker Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  packages: write
+
+jobs:
+  push:
+    name: Build & Push
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker login ghcr.io --username StckOverflw --password "$GITHUB_TOKEN"
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: |
+            ghcr.io/mikbot/quotes:${{ github.sha }}
+            ghcr.io/mikbot/quotes:latest
+          platforms: linux/amd64
